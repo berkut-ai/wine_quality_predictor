@@ -1,1 +1,5 @@
 .venv/
+ml/data/wine_dataset.csv
+ml/data/winequality-red.csv
+ml/data/winequality-white.csv
+ml/catboost_info
