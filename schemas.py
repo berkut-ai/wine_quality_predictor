@@ -15,7 +15,6 @@ class PredictRequest(BaseModel):
     pH: float
     sulphates: float
     alcohol: float
-    quality: int
     color: Literal['red', 'white']
 
 class PredictResponse(BaseModel):
