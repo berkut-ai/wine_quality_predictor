@@ -15,18 +15,16 @@ cb.fit(X, y)
 rf.fit(X, y)
 
 config = {
-  "models": [
-    {
-      "name": "catboost",
+  "models": {
+    "catboost": {
       "path": "catboost.pkl",
       "weight": 0.29
     },
-    {
-      "name": "random_forest",
+    "random_forest": {
       "path": "randomforest.pkl",
       "weight": 0.71
     }
-  ]
+  }
 }
 
 with open('models/config.json', 'w', encoding='utf-8') as conf_file:
