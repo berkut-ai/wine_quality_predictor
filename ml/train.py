@@ -6,7 +6,8 @@ import pandas as pd
 
 df = pd.read_csv('data/train_dataset.csv')
 
-X, y = df.drop('quality', axis=1), df['quality']
+X = df.drop('quality', axis=1)
+y = df['quality']
 
 cb = CatBoostRegressor(random_state=42, verbose=0)
 rf = RandomForestRegressor(random_state=42, n_jobs=-1)
