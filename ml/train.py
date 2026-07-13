@@ -2,9 +2,14 @@ from catboost import CatBoostRegressor
 from sklearn.ensemble import  RandomForestRegressor
 import joblib
 import json
+from pathlib import Path
 import pandas as pd
 
-df = pd.read_csv('data/train_dataset.csv')
+BASE_DIR = Path(__file__).parent
+DATA_PATH = BASE_DIR / 'data' / 'train_dataset.csv'
+MODELS_DIR = BASE_DIR / 'models'
+
+df = pd.read_csv(DATA_PATH)
 
 X = df.drop('quality', axis=1)
 y = df['quality']
@@ -28,8 +33,8 @@ config = {
   }
 }
 
-with open('models/config.json', 'w', encoding='utf-8') as conf_file:
+with (MODELS_DIR / 'config.json').open('w', encoding='utf-8') as conf_file:
     json.dump(config, conf_file)
 
-joblib.dump(cb, 'models/catboost.pkl')
-joblib.dump(rf, 'models/randomforest.pkl')
+joblib.dump(cb, MODELS_DIR / 'catboost.pkl')
+joblib.dump(rf, MODELS_DIR / 'randomforest.pkl')
