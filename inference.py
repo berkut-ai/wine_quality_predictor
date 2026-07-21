@@ -2,12 +2,15 @@ from schemas import PredictRequest, PredictResponse
 import joblib
 import json
 import pandas as pd
+from pathlib import Path
 
-with open('ml/models/config.json', 'r', encoding='utf-8') as conf_file:
+BASE_DIR = Path(__file__).parent
+
+with open(BASE_DIR / 'ml' / 'models' / 'config.json', 'r', encoding='utf-8') as conf_file:
     config = json.load(conf_file)
 
-cat_boost = joblib.load('ml/models/catboost.pkl')
-random_forest = joblib.load('ml/models/randomforest.pkl')
+cat_boost = joblib.load(BASE_DIR / 'ml' / 'models' / 'catboost.pkl')
+random_forest = joblib.load(BASE_DIR / 'ml' / 'models' / 'randomforest.pkl')
 
 def predict(data: PredictRequest) -> PredictResponse:
     df = pd.DataFrame([data.model_dump(by_alias=True)])
