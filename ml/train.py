@@ -33,7 +33,7 @@ config = {
   }
 }
 
-with (MODELS_DIR / 'config.json').open('w', encoding='utf-8') as conf_file:
+with (MODELS_DIR / 'models_config.json').open('w', encoding='utf-8') as conf_file:
     json.dump(config, conf_file)
 
 joblib.dump(cb, MODELS_DIR / 'catboost.pkl')
