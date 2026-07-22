@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Literal
 
-
 class PredictRequest(BaseModel):
     model_config = {'extra': 'forbid'}
 
@@ -21,3 +20,8 @@ class PredictRequest(BaseModel):
 class PredictResponse(BaseModel):
     prediction: int
     prediction_float: float
+
+class Wine(PredictRequest):
+    name: str
+    year: int | None = None
+    country: str | None = None
