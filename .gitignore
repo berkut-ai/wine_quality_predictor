@@ -1,4 +1,6 @@
 .venv/
+*.pyc
+logs
 ml/data/wine_dataset.csv
 ml/data/winequality-red.csv
 ml/data/winequality-white.csv

@@ -1,19 +1,34 @@
 from schemas import PredictRequest, PredictResponse
+from pathlib import Path
 import joblib
 import json
+import logging
 import pandas as pd
-from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).parent
 
-with open(BASE_DIR / 'ml' / 'models' / 'config.json', 'r', encoding='utf-8') as conf_file:
+with open(BASE_DIR / 'ml' / 'models' / 'models_config.json', 'r', encoding='utf-8') as conf_file:
     config = json.load(conf_file)
 
-cat_boost = joblib.load(BASE_DIR / 'ml' / 'models' / 'catboost.pkl')
-random_forest = joblib.load(BASE_DIR / 'ml' / 'models' / 'randomforest.pkl')
+try:
+    cat_boost = joblib.load(BASE_DIR / 'ml' / 'models' / 'catboost.pkl')
+    random_forest = joblib.load(BASE_DIR / 'ml' / 'models' / 'randomforest.pkl')
+except Exception as err:
+    logger.exception("Failed to load models.", exc_info=err)
+else:
+    logger.info("Models are loaded.")
+
+
 
 def predict(data: PredictRequest) -> PredictResponse:
-    df = pd.DataFrame([data.model_dump(by_alias=True)])
+    df = pd.DataFrame([
+        data.model_dump(
+            by_alias=True,
+            exclude={"name", "year", "country"},
+        )
+    ])
     df['color'] = df['color'].map({'red': 0, 'white': 1})
 
     pred = (config['models']['catboost']['weight'] * cat_boost.predict(df) + config['models']['random_forest']['weight'] * random_forest.predict(df))[0]
