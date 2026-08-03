@@ -20,7 +20,7 @@ limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-@app.post('/predict', response_model=PredictResponse)
+@app.post('/v1/predict', response_model=PredictResponse)
 @limiter.limit('30/minute')
 async def create_predict(request: Request, data: Annotated[Wine, Body()]):
     wine = f"{data.name}"
