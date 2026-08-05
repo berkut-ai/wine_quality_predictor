@@ -22,7 +22,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get('/')
-async def root():
+@limiter.limit("30/minute")
+async def root(request: Request):
     return {
         "status": "ok"
     }
