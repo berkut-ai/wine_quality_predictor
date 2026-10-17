@@ -14,7 +14,7 @@ from slowapi.util import get_remote_address
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(title="Wine Quality Predictor")
 
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
@@ -22,7 +22,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get('/')
-async def root():
+@limiter.limit("30/minute")
+async def root(request: Request):
     return {
         "status": "ok"
     }
